@@ -24,13 +24,13 @@ export const Products: CollectionConfig = {
     {
       name: 'world',
       type: 'relationship',
-      relationTo: 'worlds',
+      relationTo: 'worlds' as any,
       required: true,
     },
     {
       name: 'subcategory',
       type: 'relationship',
-      relationTo: 'subcategories',
+      relationTo: 'subcategories' as any ,
       required: true,
     },
     {

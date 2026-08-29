@@ -24,7 +24,7 @@ export const Subcategories: CollectionConfig = {
     {
       name: 'world',
       type: 'relationship',
-      relationTo: 'worlds',
+      relationTo: 'worlds' as any,
       required: true,
     },
     {
