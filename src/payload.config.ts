@@ -10,6 +10,7 @@ import { Media } from "./collections/Media";
 import { Worlds } from "./collections/Worlds";
 import { Subcategories } from './collections/Subcategories';
 import { Products } from './collections/Products';
+import { Home } from './globals/Home';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -21,7 +22,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Worlds, Subcategories, Products],
+  collections: [Users, Media, Worlds, Subcategories, Products], globals: [Home],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
