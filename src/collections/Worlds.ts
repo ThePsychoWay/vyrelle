@@ -57,5 +57,10 @@ export const Worlds: CollectionConfig = {
       type: 'checkbox',
       defaultValue: true,
     },
+    {
+      name: 'seoH1',
+      type: 'text',
+      admin: { description: 'Literal, searchable heading, e.g. "Nighties & Night Gowns for Women"' },
+    },
   ],
 }   
