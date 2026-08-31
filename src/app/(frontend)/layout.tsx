@@ -1,6 +1,9 @@
 import React from 'react'
 import { Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google'
 import './styles.css'
+import { CartProvider } from './CartContext'
+import CartDrawer from './CartDrawer'
+import CartButton from './CartButton'
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -26,7 +29,11 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${jakarta.variable}`}>
       <body>
-        <main>{children}</main>
+        <CartProvider>
+          <CartButton />
+          <CartDrawer />
+          <main>{children}</main>
+        </CartProvider>
       </body>
     </html>
   )

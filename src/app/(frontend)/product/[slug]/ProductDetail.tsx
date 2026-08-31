@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useCart } from '../../CartContext'
 
 type Variant = {
   sku: string
@@ -14,6 +15,7 @@ type Variant = {
 type ProductImage = { image: { url: string } | string }
 type Product = {
   id: string
+  slug: string
   title: string
   shortDescription?: string
   highlights?: { point: string }[]
@@ -22,6 +24,7 @@ type Product = {
 }
 
 export default function ProductDetail({ product }: { product: Product }) {
+  const { addItem } = useCart()
   const variants = product.variants || []
   const colours = Array.from(new Set(variants.map((v) => v.colour).filter(Boolean)))
   const sizes = Array.from(new Set(variants.map((v) => v.size).filter(Boolean)))
@@ -29,10 +32,22 @@ export default function ProductDetail({ product }: { product: Product }) {
   const [selectedColour, setSelectedColour] = useState(colours[0] || '')
   const [selectedSize, setSelectedSize] = useState(sizes[0] || '')
 
-  const selectedVariant = variants.find(
-    (v) => v.colour === selectedColour && v.size === selectedSize,
-  )
+  const selectedVariant = variants.find((v) => v.colour === selectedColour && v.size === selectedSize)
   const images = product.images || []
+  const firstImageUrl = images[0] && typeof images[0].image === 'object' ? images[0].image.url : ''
+
+  const handleAddToBag = () => {
+    if (!selectedVariant) return
+    addItem({
+      productId: product.id,
+      slug: product.slug,
+      title: product.title,
+      imageUrl: firstImageUrl,
+      colour: selectedColour,
+      size: selectedSize,
+      price: selectedVariant.price,
+    })
+  }
 
   return (
     <main className="min-h-screen bg-ground text-ink font-body pb-24">
@@ -112,12 +127,26 @@ export default function ProductDetail({ product }: { product: Product }) {
               ))}
             </ul>
           )}
+
+          <button
+            onClick={handleAddToBag}
+            disabled={!selectedVariant}
+            className="w-full md:w-auto bg-accent text-white px-8 py-3 rounded-md font-medium disabled:opacity-40"
+          >
+            Add to Bag
+          </button>
         </div>
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 bg-surface border-t border-line px-4 py-3 flex items-center justify-between md:hidden">
         <span className="font-medium">{selectedVariant ? `₹${selectedVariant.price}` : '—'}</span>
-        <button className="bg-accent text-white px-8 py-3 rounded-md font-medium">Add to Bag</button>
+        <button
+          onClick={handleAddToBag}
+          disabled={!selectedVariant}
+          className="bg-accent text-white px-8 py-3 rounded-md font-medium disabled:opacity-40"
+        >
+          Add to Bag
+        </button>
       </div>
     </main>
   )
